@@ -22,4 +22,9 @@ class Project extends Model
             $query->where('user_id', auth()->user()->id);
         });
     }
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
 }
