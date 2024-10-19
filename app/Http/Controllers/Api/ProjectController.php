@@ -8,10 +8,10 @@ use App\Traits\Api\ResponseTrait;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
-use App\Http\Resources\ProjectResource;
 use App\Http\Requests\Api\ProjectRequest;
-use App\Http\Resources\ProjectCollection;
 use App\Services\Project\IProjectService;
+use App\Http\Resources\Project\ProjectResource;
+use App\Http\Resources\Project\ProjectCollection;
 
 class ProjectController extends Controller
 {

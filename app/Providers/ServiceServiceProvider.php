@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Services\Task\TaskService;
 use App\Services\User\UserService;
+use App\Services\Task\ITaskService;
 use App\Services\User\IUserService;
 use Illuminate\Support\ServiceProvider;
 use App\Services\Project\ProjectService;
@@ -17,6 +19,7 @@ class ServiceServiceProvider extends ServiceProvider
     {
         $this->app->bind(IUserService::class, UserService::class);
         $this->app->bind(IProjectService::class, ProjectService::class);
+        $this->app->bind(ITaskService::class, TaskService::class);
     }
 
     /**
