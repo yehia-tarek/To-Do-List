@@ -60,7 +60,7 @@ class ProjectController extends Controller
     {
         try {
             $data = $request->validated();
-            $data['user_id'] = $request->user();
+            $data['user_id'] = $request->user()->id;
 
             $project = $this->projectService->store($data);
 
