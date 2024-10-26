@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use Exception;
 use Illuminate\Http\Request;
 use App\Traits\Api\ResponseTrait;
+use App\Services\Task\ITaskService;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
@@ -18,9 +19,11 @@ class SubTaskController extends Controller
 {
     use ResponseTrait;
     protected $taskService;
+    protected $subTaskService;
 
-    public function __construct(ISubTaskService $taskService)
+    public function __construct(ISubTaskService $subTaskService, ITaskService $taskService)
     {
+        $this->subTaskService = $subTaskService;
         $this->taskService = $taskService;
     }
 
@@ -30,12 +33,18 @@ class SubTaskController extends Controller
     public function index(Request $request, $id)
     {
         try {
+            $task = $this->taskService->getById($id);
+
+            if (!$task) {
+                return $this->errorResponse('Task not found', [], 404);
+            }
+
             $perPage = $request->get('per_page', 15);
 
-            $cacheKey = "all_sub_tasks_user_{$request->user()}";
+            $cacheKey = "all_sub_tasks_user_{$request->user()}_{$id}";
 
             $tasks = Cache::remember($cacheKey, now()->addMinutes(5), function () use ($perPage, $id) {
-                return $this->taskService->all(
+                return $this->subTaskService->allSubTasksByTaskId(
                     $id,
                     true,
                     $perPage
@@ -63,7 +72,7 @@ class SubTaskController extends Controller
             $data = $request->validated();
             $data['user_id'] = $request->user()->id;
 
-            $task = $this->taskService->store($data);
+            $task = $this->subTaskService->store($data);
 
             Cache::forget("all_sub_tasks_user_{$request->user()}");
 
@@ -86,7 +95,7 @@ class SubTaskController extends Controller
     {
         try {
             $task = Cache::remember("sub_task_{$id}", now()->addMinutes(30), function () use ($id) {
-                return $this->taskService->getById($id);
+                return $this->subTaskService->getById($id);
             });
 
             if (!$task) {
@@ -111,9 +120,9 @@ class SubTaskController extends Controller
     public function update(SubTaskUpdateRequest $request, $id)
     {
         try {
-            $task = $this->taskService->update($id, $request->validated());
+            $subTask = $this->subTaskService->update($id, $request->validated());
 
-            if (!$task) {
+            if (!$subTask) {
                 return $this->errorResponse('Sub Task not found', 404);
             }
 
@@ -121,7 +130,7 @@ class SubTaskController extends Controller
             Cache::forget("all_tasks_user_{$request->user()}");
 
             return $this->successResponse(
-                new SubTaskResource($task),
+                new SubTaskResource($subTask),
                 'Sub Task updated successfully',
                 200
             );
@@ -138,7 +147,7 @@ class SubTaskController extends Controller
     public function destroy($id, Request $request)
     {
         try {
-            $task = $this->taskService->delete($id);
+            $task = $this->subTaskService->delete($id);
 
             if (!$task) {
                 return $this->errorResponse('Sub Task not found', 404);

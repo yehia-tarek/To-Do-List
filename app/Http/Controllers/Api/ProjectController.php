@@ -92,7 +92,7 @@ class ProjectController extends Controller
             }
 
             return $this->successResponse(
-                new ProjectResource($project),
+                new ProjectResource($project, true),
                 'Project retrieved successfully'
             );
         } catch (Exception $e) {

@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Task extends Model
 {
@@ -19,12 +20,9 @@ class Task extends Model
         'due_date',
     ];
 
-    protected static function boot()
+    protected static function booted(): void
     {
-        parent::boot();
-        static::addGlobalScope('user', function ($query) {
-            $query->where('user_id', auth()->user()->id);
-        });
+        static::addGlobalScope(new UserScope);
     }
 
     public function project()

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\TagController;
 use App\Http\Controllers\Api\TaskController;
 use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\Api\SubTaskController;
@@ -39,6 +40,14 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('', 'store');
         Route::put('/{sub_task_id}', 'update');
         Route::delete('/{sub_task_id}', 'destroy');
+    });
+
+    Route::controller(TagController::class)->prefix('tags')->group(function () {
+        Route::get('', 'index');
+        Route::post('', 'store');
+        Route::get('/{tag_id}', 'show');
+        Route::put('/{tag_id}', 'update');
+        Route::delete('/{tag_id}', 'destroy');
     });
 });
 

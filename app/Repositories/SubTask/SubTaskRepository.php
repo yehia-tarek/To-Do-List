@@ -8,12 +8,12 @@ use App\Repositories\SubTask\ISubTaskRepository;
 class SubTaskRepository implements ISubTaskRepository
 {
 
-    public function all($taskId, $paginate = false, $perPage = 15, $columns = ['*'], $orderBy = 'id', $sort = 'asc')
+    public function allSubTasksByTaskId($taskId, $paginate = false, $perPage = 15, $columns = ['*'], $orderBy = 'id', $sort = 'asc')
     {
         $query = SubTask::select($columns)
             ->orderBy($orderBy, $sort)
             ->where('task_id', $taskId);
-            
+
         if ($paginate) {
             return $query->paginate($perPage, $columns);
         }
@@ -33,6 +33,11 @@ class SubTaskRepository implements ISubTaskRepository
     public function update($id, array $data)
     {
         $subTask = SubTask::find($id);
+
+        if (!$subTask) {
+            return false;
+        }
+
         $subTask->update($data);
 
         return $subTask;

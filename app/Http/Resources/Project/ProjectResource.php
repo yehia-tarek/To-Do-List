@@ -8,6 +8,14 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProjectResource extends JsonResource
 {
+    private bool $withTasks;
+
+    public function __construct($resource, $withTasks = false)
+    {
+        parent::__construct($resource);
+
+        $this->withTasks = $withTasks;
+    }
     /**
      * Transform the resource into an array.
      *
@@ -15,12 +23,17 @@ class ProjectResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
+        $data = [
             'id' => $this->id,
             'user_id' => $this->user_id,
             'project_name' => $this->project_name,
             'description' => $this->description,
-            'tasks' => TaskResource::collection($this->tasks),
         ];
+
+        if ($this->withTasks) {
+            $data['tasks'] = TaskResource::collection($this->tasks);
+        }
+
+        return $data;
     }
 }
