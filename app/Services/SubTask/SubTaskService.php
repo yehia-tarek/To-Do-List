@@ -14,9 +14,9 @@ class SubTaskService implements ISubTaskService
         $this->subTaskRepository = $subTaskRepository;
     }
 
-    public function all($taskId, $paginate = false, $perPage = 15, $columns = ['*'], $orderBy = 'id', $sort = 'asc')
+    public function allSubTasksByTaskId($taskId, $paginate = false, $perPage = 15, $columns = ['*'], $orderBy = 'id', $sort = 'asc')
     {
-        return $this->subTaskRepository->all($taskId, $paginate, $perPage, $columns, $orderBy, $sort);
+        return $this->subTaskRepository->allSubTasksByTaskId($taskId, $paginate, $perPage, $columns, $orderBy, $sort);
     }
 
     public function getById($id)

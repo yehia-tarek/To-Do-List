@@ -1,16 +1,15 @@
 <?php
 
-namespace  App\Repositories\Task;
+namespace App\Repositories\Tag;
 
-use App\Models\Task;
-use App\Repositories\Task\ITaskRepository;
+use App\Models\Tag;
+use App\Repositories\Tag\ITagRepository;
 
-class TaskRepository implements ITaskRepository
+class TagRepository implements ITagRepository
 {
-
     public function all($paginate = false, $perPage = 15, $columns = ['*'], $orderBy = 'id', $sort = 'asc')
     {
-        $query = Task::select($columns)->orderBy($orderBy, $sort);
+        $query = Tag::select($columns)->orderBy($orderBy, $sort);
         if ($paginate) {
             return $query->paginate($perPage, $columns);
         }
@@ -19,28 +18,29 @@ class TaskRepository implements ITaskRepository
 
     public function getById($id)
     {
-        return Task::find($id);
+        return Tag::find($id);
     }
 
     public function store(array $data)
     {
-        return Task::create($data);
+        return Tag::create($data);
     }
 
     public function update($id, array $data)
     {
-        $task = Task::find($id);
-        
-        if (!$task) {
+        $tag = Tag::find($id);
+
+        if (!$tag) {
             return null;
         }
-        $task->update($data);
 
-        return $task;
+        $tag->update($data);
+
+        return $tag;
     }
 
     public function delete($id)
     {
-        return Task::destroy($id);
+        return Tag::where('id', $id)->delete();
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\Tag\TagService;
+use App\Services\Tag\ITagService;
 use App\Services\Task\TaskService;
 use App\Services\User\UserService;
 use App\Services\Task\ITaskService;
@@ -23,6 +25,7 @@ class ServiceServiceProvider extends ServiceProvider
         $this->app->bind(IProjectService::class, ProjectService::class);
         $this->app->bind(ITaskService::class, TaskService::class);
         $this->app->bind(ISubTaskService::class, SubTaskService::class);
+        $this->app->bind(ITagService::class, TagService::class);
     }
 
     /**

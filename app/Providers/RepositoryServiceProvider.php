@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Repositories\Tag\TagRepository;
 use Illuminate\Support\ServiceProvider;
+use App\Repositories\Tag\ITagRepository;
 use App\Repositories\Task\TaskRepository;
 use App\Repositories\User\UserRepository;
 use App\Repositories\Task\ITaskRepository;
@@ -23,6 +25,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(IProjectRepository::class, ProjectRepository::class);
         $this->app->bind(ITaskRepository::class, TaskRepository::class);
         $this->app->bind(ISubTaskRepository::class, SubTaskRepository::class);
+        $this->app->bind(ITagRepository::class, TagRepository::class);
     }
 
     /**
