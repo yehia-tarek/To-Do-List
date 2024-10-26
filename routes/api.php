@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\TagController;
 use App\Http\Controllers\Api\TaskController;
+use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\Api\SubTaskController;
 use App\Http\Controllers\Api\Auth\AuthController;
@@ -48,6 +49,15 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/{tag_id}', 'show');
         Route::put('/{tag_id}', 'update');
         Route::delete('/{tag_id}', 'destroy');
+    });
+
+    Route::get('tasks/{id}/comments', [CommentController::class, 'index']);
+
+    Route::controller(CommentController::class)->prefix('comments')->group(function () {
+        Route::get('/{comment_id}', 'show');
+        Route::post('', 'store');
+        Route::put('/{comment_id}', 'update');
+        Route::delete('/{comment_id}', 'destroy');
     });
 });
 
