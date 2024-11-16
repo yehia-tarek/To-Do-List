@@ -29,4 +29,9 @@ class Task extends Model
     {
         return $this->belongsTo(Project::class);
     }
+
+    public function attachments()
+    {
+        return $this->hasMany(Attachment::class);
+    }
 }

@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Attachment extends Model
 {
@@ -17,4 +18,13 @@ class Attachment extends Model
         'file_url',
         'uploaded_at',
     ];
+
+    protected $casts = [
+        'uploaded_at' => 'datetime',
+    ];
+
+    public function task(): BelongsTo
+    {
+        return $this->belongsTo(Task::class);
+    }
 }
