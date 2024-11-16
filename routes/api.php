@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\Api\SubTaskController;
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\AttachmentController;
 
 Route::controller(AuthController::class)->group(function () {
     Route::post('register', 'register');
@@ -58,6 +59,14 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('', 'store');
         Route::put('/{comment_id}', 'update');
         Route::delete('/{comment_id}', 'destroy');
+    });
+
+    Route::controller(AttachmentController::class)->group(function () {
+
+        Route::get('tasks/{task}/attachments', 'index');
+        Route::post('tasks/{task}/attachments', 'store');
+        Route::get('attachments/{attachment}/download', 'download')->name('attachments.download');
+        Route::delete('attachments/{attachment}', 'destroy');
     });
 });
 
